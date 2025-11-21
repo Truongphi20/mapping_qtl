@@ -7,13 +7,14 @@
   "customizations": {
         "vscode": {
             "extensions": [
-            "reditorsupport.r"
+                "reditorsupport.r"
             ],
             "settings": {
-                "terminal.integrated.inheritEnv": true,
-                "terminal.integrated.shell.linux": "/bin/bash",
-                "terminal.integrated.shellArgs.linux": ["-l"]
+                "terminal.integrated.shell.linux": "bash"
             }
         }
-    }
+    },
+   "remoteEnv": {
+        "SHELL": "/bin/bash"
+  }
 }

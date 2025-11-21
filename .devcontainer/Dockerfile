@@ -65,14 +65,14 @@ RUN R -q -e "\
 RUN mkdir -p /workspace 
 RUN chown -R docker:$docker /workspace
 
-USER docker
 WORKDIR /workspace
 SHELL ["/bin/bash", "-c"]
 
-
 # Add colorful, git-aware PS1
-RUN echo 'parse_git_branch() {' >> /home/docker/.bashrc \
- && echo '  branch=$(git branch --show-current 2>/dev/null)' >> /home/docker/.bashrc \
- && echo ' if [ -n "$branch" ]; then echo " (\[\033[0;33m\]$branch\[\033[0m\])"; fi' >> /home/docker/.bashrc \
- && echo '}' >> /home/docker/.bashrc \
- && echo 'export PS1="\[\033[0;32m\]\u@\h\[\033[0m\]->\[\033[0;34m\]\w\[\033[0m\]\$(parse_git_branch) \$ "' >> /home/docker/.bashrc
+RUN echo -e 'parse_git_branch() {\n\
+branch=$(git branch --show-current 2>/dev/null)\n\
+if [ -n "$branch" ]; then echo " (\e[0;33m$branch\e[0m)"; fi\n\
+}\n\
+export PS1="\[\e[0;32m\]\u@\h\[\e[0m\]->\[\e[0;34m\]\w\[\e[0m\]\$(parse_git_branch) \$ "' >> /home/docker/.bashrc
+
+USER docker
