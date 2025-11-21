@@ -74,6 +74,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get install -y gh \
     && rm -rf /var/lib/apt/lists/*
 
+# Install openssh-client
+RUN apt-get update && apt-get install -y openssh-client
 
 # Create vscode user with UID/GID and bash
 RUN mkdir -p /workspace 
