@@ -1,0 +1,19 @@
+{
+  "name": "R Base Dev Container",
+  "dockerFile": "Dockerfile",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "customizations": {
+        "vscode": {
+            "extensions": [
+            "reditorsupport.r"
+            ],
+            "settings": {
+                "terminal.integrated.inheritEnv": true,
+                "terminal.integrated.shell.linux": "/bin/bash",
+                "terminal.integrated.shellArgs.linux": ["-l"]
+            }
+        }
+    }
+}
