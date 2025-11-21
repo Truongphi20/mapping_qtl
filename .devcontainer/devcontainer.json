@@ -2,7 +2,7 @@
   "name": "R Base Dev Container",
   "dockerFile": "Dockerfile",
   "workspaceFolder": "/workspace",
-  "remoteUser": "vscode",
+  "remoteUser": "docker",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
   "customizations": {
         "vscode": {

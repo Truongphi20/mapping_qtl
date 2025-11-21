@@ -62,23 +62,17 @@ RUN R -q -e "\
 "
 
 # Create vscode user with UID/GID and bash
-ARG USERNAME=vscode
-ARG USER_UID=1002
-ARG USER_GID=1002
+RUN mkdir -p /workspace 
+RUN chown -R docker:$docker /workspace
 
-RUN groupadd -g $USER_GID $USERNAME \
- && useradd -m -u $USER_UID -g $USER_GID -s /bin/bash $USERNAME \
- && mkdir -p /workspace \
- && chown -R $USER_UID:$USER_GID /workspace
-
-USER $USERNAME
+USER docker
 WORKDIR /workspace
 SHELL ["/bin/bash", "-c"]
 
 
 # Add colorful, git-aware PS1
-RUN echo 'parse_git_branch() {' >> /home/vscode/.bashrc \
- && echo '  branch=$(git branch --show-current 2>/dev/null)' >> /home/vscode/.bashrc \
- && echo ' if [ -n "$branch" ]; then echo " (\033[0;33m$branch\033[0m)"; fi' >> /home/vscode/.bashrc \
- && echo '}' >> /home/vscode/.bashrc \
- && echo 'export PS1="\[\033[0;32m\]\u@\h\[\033[0m\]->\[\033[0;34m\]\w\[\033[0m\]\$(parse_git_branch) \$ "' >> /home/vscode/.bashrc
+RUN echo 'parse_git_branch() {' >> /home/docker/.bashrc \
+ && echo '  branch=$(git branch --show-current 2>/dev/null)' >> /home/docker/.bashrc \
+ && echo ' if [ -n "$branch" ]; then echo " (\[\033[0;33m\]$branch\[\033[0m\])"; fi' >> /home/docker/.bashrc \
+ && echo '}' >> /home/docker/.bashrc \
+ && echo 'export PS1="\[\033[0;32m\]\u@\h\[\033[0m\]->\[\033[0;34m\]\w\[\033[0m\]\$(parse_git_branch) \$ "' >> /home/docker/.bashrc
