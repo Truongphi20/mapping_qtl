@@ -135,6 +135,16 @@ export PS1="\\[\\e[0;32m\\]\\u@\\h\\[\\e[0m\\]->\\[\\e[0;34m\\]\\w\\[\\e[0m\\]\\
 ###############################
 RUN gem install jekyll bundler
 
+###############################
+# Install Python and Pip
+###############################
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-venv \
+    python-is-python3 \
+    python3-yaml \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 USER docker
 
