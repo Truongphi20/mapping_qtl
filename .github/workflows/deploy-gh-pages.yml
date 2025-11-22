@@ -16,7 +16,7 @@ jobs:
 
       - name: Build Docker image with Jekyll env
         run: |
-          docker build -t jekyll-site < .devcontainer/Dockerfile
+          docker build -t jekyll-site -f .devcontainer/Dockerfile .
 
       - name: Run Jekyll build inside container
         run: |
