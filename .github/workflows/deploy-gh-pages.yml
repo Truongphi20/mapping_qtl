@@ -6,24 +6,31 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     permissions:
-      contents: write  # required for gh-pages deploy
+      contents: write
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Build Docker image with Jekyll env
-        run: |
-          docker build -t jekyll-site -f .devcontainer/Dockerfile .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image (cached)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: .devcontainer/Dockerfile
+          tags: jekyll-site:latest
+          load: true   # makes image available for docker run
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Run Jekyll build inside container
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/workspace \
             -w /workspace \
-            jekyll-site \
+            jekyll-site:latest \
             make site
 
       - name: Deploy to GitHub Pages
