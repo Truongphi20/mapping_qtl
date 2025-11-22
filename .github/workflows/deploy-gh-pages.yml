@@ -28,6 +28,7 @@ jobs:
       - name: Download required data
         run: |
           docker run --rm \
+            -u root \
             -v ${{ github.workspace }}:/workspace \
             -w /workspace \
             jekyll-site:latest \
@@ -41,8 +42,8 @@ jobs:
 
       - name: Run Jekyll build inside container
         run: |
-          mkdir -p _episodes &&\
           docker run --rm \
+            -u root \
             -v ${{ github.workspace }}:/workspace \
             -w /workspace \
             jekyll-site:latest \
