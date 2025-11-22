@@ -49,6 +49,14 @@ jobs:
             jekyll-site:latest \
             make site
 
+      - name: Remove oversized data files before deploy
+        run: |
+          rm -f _site/data/cc_multitissue_qtlviewer.Rdata
+          rm -f _site/data/qtl2_demo.Rdata
+          rm -f _site/data/cc_variants.sqlite
+          rm -f _site/data/mouse_genes.sqlite
+          rm -f _site/data/mouse_genes_mgi.sqlite
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
