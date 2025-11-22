@@ -380,7 +380,7 @@ BOILERPLATE = (
     ('reference.md', ROOT_REFERENCE_MD),
     ('setup.md', ROOT_SETUP_MD),
     ('aio.md', ROOT_AIO_MD),
-    ('_episodes/01-introduction.md', EPISODES_INTRODUCTION_MD),
+    ('Introduction.md', EPISODES_INTRODUCTION_MD),
     ('_extras/about.md', EXTRAS_ABOUT_MD),
     ('_extras/discuss.md', EXTRAS_DISCUSS_MD),
     ('_extras/figures.md', EXTRAS_FIGURES_MD),

@@ -22,8 +22,15 @@ generate_md_episodes <- function() {
         install.packages(missing_pkgs)
     }
 
-    ## find all the Rmd files, and generate the paths for their respective outputs
+    ## find all the Rmd files
     src_rmd <- list.files(pattern = "??-*.Rmd$", path = "_episodes_rmd", full.names = TRUE)
+    
+    ## Create _episodes directory if it does not exist
+    if (!dir.exists("_episodes")) {
+        dir.create("_episodes")
+    }
+
+    ## generate the paths for their respective outputs
     dest_md <- file.path("_episodes", gsub("Rmd$", "md", basename(src_rmd)))
 
     ## knit the Rmd into markdown
