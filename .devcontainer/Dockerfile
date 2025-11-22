@@ -59,6 +59,20 @@ RUN R -q -e "\
   remotes::install_version('xml2', version = '1.5.0'); \
   remotes::install_version('xmlparsedata', version = '1.0.5'); \
   remotes::install_version('languageserver', version = '0.3.16'); \
+  remotes::install_version('checkpoint',  version = '0.4.10'); \
+  remotes::install_version('fastmap',     version = '1.2.0') \
+  remotes::install_version('bit',         version = '4.6.0') \
+  remotes::install_version('cachem',      version = '1.1.0') \
+  remotes::install_version('bit64',       version = '4.6.0-1') \
+  remotes::install_version('blob',        version = '1.2.4') \
+  remotes::install_version('DBI',         version = '1.2.3') \
+  remotes::install_version('memoise',     version = '2.0.1') \
+  remotes::install_version('pkgconfig',   version = '2.0.3') \
+  remotes::install_version('plogr',       version = '0.2.0') \
+  remotes::install_version('Rcpp',        version = '1.1.0') \
+  remotes::install_version('data.table',  version = '1.17.8') \
+  remotes::install_version('RSQLite',     version = '2.4.4') \
+  remotes::install_version('RcppEigen',   version = '0.3.4.0.2')
 "
 
 # Install dependencies (Git, curl, Bash, GitHub CLI)
