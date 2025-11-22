@@ -41,6 +41,7 @@ jobs:
 
       - name: Run Jekyll build inside container
         run: |
+          mkdir -p _episodes &&\
           docker run --rm \
             -v ${{ github.workspace }}:/workspace \
             -w /workspace \
