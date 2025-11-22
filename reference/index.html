@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2025-11-22 10:15:12 +0000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+    <title>Quantitative Trait Mapping</title>
+  </head>
+  <body>
+    <div class="container">
+      
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+
+      
+      <a class="navbar-brand" href="../">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../conduct/">Code of Conduct</a></li>
+
+	
+        
+        <li><a href="../setup/">Setup</a></li>
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            <li><a href="../02-input-file-format/">Input File Format</a></li>
+            
+            <li><a href="../03-calc-genoprob/">Calculating Genotype Probabilities</a></li>
+            
+            <li><a href="../04-special-x-covar/">Special covariates for the X chromosome</a></li>
+            
+            <li><a href="../05-perform-genome-scan/">Performing a genome scan</a></li>
+            
+            <li><a href="../06-perform-perm-test/">Performing a permutation test</a></li>
+            
+            <li><a href="../07-find-lod-peaks/">Finding LOD peaks</a></li>
+            
+            <li><a href="../08-calc-kinship/">Calculating A Kinship Matrix</a></li>
+            
+            <li><a href="../09-perform-genome-scan-lmm/">Performing a genome scan with a linear mixed model</a></li>
+            
+            <li><a href="../10-perform-genome-scan-bin/">Performing a genome scan with binary traits</a></li>
+            
+            <li><a href="../11-est-qtl-effects/">Estimated QTL effects</a></li>
+            
+            <li><a href="../12-snp-assoc/">SNP association mapping</a></li>
+            
+            <li><a href="../13-qtl-in-do/">QTL analysis in Diversity Outbred Mice</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio/">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference/">Reference</a></li>
+            
+            <li><a href="../about/">About</a></li>
+            
+            <li><a href="../discuss/">Discussion</a></li>
+            
+            <li><a href="../figures/">Figures</a></li>
+            
+            <li><a href="../guide/">Instructor Notes</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../license/">License</a></li>
+	
+	<li><a href="/edit/gh-pages/reference.md">Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+<h1 class="maintitle"><a href="../">Quantitative Trait Mapping</a></h1>
+
+
+<h2>Key Points</h2>
+<table class="table table-striped">
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../02-input-file-format/">Input File Format</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>QTL mapping data consists of a set of tables of data: marker genotypes, phenotypes, marker maps, etc.</p>
+</li>
+        
+        <li><p>These different tables are in separate comma-delimited (CSV) files.</p>
+</li>
+        
+        <li><p>In each file, the first column is a set of IDs for the rows, and the first row is a set of IDs for the columns.</p>
+</li>
+        
+        <li><p>In addition to primary data, a separate file with control parameters (or metadata) in either <a href="http://www.yaml.org">YAML</a> or <a href="http://json.org">JSON</a> format is required.</p>
+</li>
+        
+        <li><p>Published and public data already formatted for QTL mapping are available on the web.</p>
+</li>
+        
+        <li><p>These data can be used as a model for formatting your own QTL data.</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../03-calc-genoprob/">Calculating Genotype Probabilities</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>The first step in QTL analysis is to calculate genotype probabilities.</p>
+</li>
+        
+        <li><p>Insert pseudomarkers to calculate QTL at positions between genotyped markers.</p>
+</li>
+        
+        <li><p>Calculate genotype probabilities between genotyped markers with calc_genoprob().</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../04-special-x-covar/">Special covariates for the X chromosome</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>The X chromosome requires special treatment in QTL mapping.</p>
+</li>
+        
+        <li><p>Special covariates such as sex should be included to avoid spurious evidence of linkage.</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../05-perform-genome-scan/">Performing a genome scan</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>A qtl2 genome scan requires genotype probabilities and a phenotype matrix.</p>
+</li>
+        
+        <li><p>The output from a genome scan contains a LOD score matrix, map positions, and phenotypes.</p>
+</li>
+        
+        <li><p>LOD curve plots for a genome scan can be viewed with plot_scan1().</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../06-perform-perm-test/">Performing a permutation test</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>A permutation test establishes the statistical  significance of a genome scan.</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../07-find-lod-peaks/">Finding LOD peaks</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>LOD peaks and support intervals can be identified with find_peaks().</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../08-calc-kinship/">Calculating A Kinship Matrix</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>Kinship matrices account for relationships among individuals.</p>
+</li>
+        
+        <li><p>Kinship is calculated as the proportion of shared alleles between individuals.</p>
+</li>
+        
+        <li><p>Kinship calculation is a precursor to a genome scan via a linear mixed model.</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../09-perform-genome-scan-lmm/">Performing a genome scan with a linear mixed model</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>To perform a genome scan with a linear mixed model, supply a kinship matrix.</p>
+</li>
+        
+        <li><p>Different mapping and kinship calculation methods give different results.</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../10-perform-genome-scan-bin/">Performing a genome scan with binary traits</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>A genome scan for binary traits (0 and 1) requires special handling; scans for non-binary traits assume normal variation of the residuals.</p>
+</li>
+        
+        <li><p>A genome scan for binary traits  is performed with logistic regression.</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../11-est-qtl-effects/">Estimated QTL effects</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>Estimated founder allele effects can be plotted from the mapping model coefficients.</p>
+</li>
+        
+        <li><p>Additive and dominance effects can be plotted using contrasts.</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../12-snp-assoc/">SNP association mapping</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>SNP association analysis with DO mice requires SNPs in the QTL regions.</p>
+</li>
+        
+        <li><p>.</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="../13-qtl-in-do/">QTL analysis in Diversity Outbred Mice</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>.</p>
+</li>
+        
+        <li><p>.</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+</table>
+
+<h2 id="glossary">Glossary</h2>
+
+<h2 id="external-references">External references</h2>
+
+<h3 id="quantitative-trait-mapping">Quantitative Trait Mapping</h3>
+
+<p>Broman KW, Wu H, Sen Ś, Churchill GA. R/qtl: QTL mapping in experimental crosses. Bioinformatics. 2003 May 1;19(7):889-90.</p>
+
+<p>Broman KW, Sen S. A Guide to QTL Mapping with R/qtl. New York: Springer; 2009 Apr 23.</p>
+
+<p>Flint J, Eskin E. Genome-wide association studies in mice. Nature Reviews Genetics. 2012 Nov;13(11):807.</p>
+
+<p>Gonzales NM, Palmer AA. Fine-mapping QTLs in advanced intercross lines and other outbred populations. Mammalian Genome. 2014 Aug 1;25(7-8):271-92.</p>
+
+<p>Mott R, Flint J. Dissecting quantitative traits in mice. Annual Review of Genomics and Human Genetics. 2013 Aug 31;14:421-39.</p>
+
+<h3 id="hidden-markov-models">Hidden Markov Models</h3>
+<p>Durbin R, Eddy SR, Krogh A, Mitchison G. Biological sequence analysis: probabilistic models of proteins and nucleic acids. Cambridge University Press; 1998 Apr 23.</p>
+
+<p>Eddy SR. What is a hidden Markov model?. Nature Biotechnology. 2004 Oct;22(10):1315.</p>
+
+<p>Rabiner LR. A tutorial on hidden Markov models and selected applications in speech recognition. Proceedings of the IEEE. 1989 Feb;77(2):257-86.</p>
+
+<h3 id="mapping-in-multiparent-crosses">Mapping in Multiparent Crosses</h3>
+<p>Aylor DL, Valdar W, Foulds-Mathes W, Buus RJ, Verdugo RA, Baric RS, Ferris MT, Frelinger JA, Heise M, Frieman MB, Gralinski LE. Genetic analysis of complex traits in the emerging Collaborative Cross. Genome Research. 2011 Aug 1;21(8):1213-22.</p>
+
+<p>Churchill GA, Airey DC, Allayee H, Angel JM, Attie AD, Beatty J, Beavis WD, Belknap JK, Bennett B, Berrettini W, Bleich A. The Collaborative Cross, a community resource for the genetic analysis of complex traits. Nature Genetics. 2004 Nov 1;36(11):1133.</p>
+
+<p>Churchill GA, Gatti DM, Munger SC, Svenson KL. The diversity outbred mouse population. Mammalian Genome. 2012 Oct 1;23(9-10):713-8.</p>
+
+<p>Collaborative Cross Consortium. The genome architecture of the Collaborative Cross mouse genetic reference population. Genetics. 2012 Feb 1;190(2):389-401.</p>
+
+<p>French JE, Gatti DM, Morgan DL, Kissling GE, Shockley KR, Knudsen GA, Shepard KG, Price HC, King D, Witt KL, Pedersen LC. Diversity outbred mice identify population-based exposure thresholds and genetic factors that influence benzene-induced genotoxicity. Environmental Health Perspectives. 2014 Nov 6;123(3):237-45.</p>
+
+<p>Gatti DM, Svenson KL, Shabalin A, Wu LY, Valdar W, Simecek P, Goodwin N, Cheng R, Pomp D, Palmer A, Chesler EJ. Quantitative trait locus mapping methods for diversity outbred mice. G3: Genes, Genomes, Genetics. 2014 Sep 1;4(9):1623-33.</p>
+
+<p>Huang X, Paulo MJ, Boer M, Effgen S, Keizer P, Koornneef M, van Eeuwijk FA. Analysis of natural allelic variation in Arabidopsis using a multiparent recombinant inbred line population. Proceedings of the National Academy of Sciences. 2011 Mar 15;108(11):4488-93.</p>
+
+<p>Kover PX, Valdar W, Trakalo J, Scarcelli N, Ehrenreich IM, Purugganan MD, Durrant C, Mott R. A multiparent advanced generation inter-cross to fine-map quantitative traits in Arabidopsis thaliana. PLoS Genetics. 2009 Jul 10;5(7):e1000551.</p>
+
+<p>Review: Population Structure in Genetic Studies: Confounding Factors and Mixed Models
+Lana S. Martin, Eleazar Eskin
+bioRxiv 092106; doi: https://doi.org/10.1101/092106</p>
+
+<p>Svenson KL, Gatti DM, Valdar W, Welsh CE, Cheng R, Chesler EJ, Palmer AA, McMillan L, Churchill GA. High-resolution genetic mapping using the Mouse Diversity Outbred population. Genetics. 2012 Feb 1;190(2):437-47.</p>
+
+
+
+
+      
+      
+<footer>
+  <div class="row">
+    <div class="col-md-6" align="left">
+      <h4>
+	Copyright &copy; 2016–2025
+	
+      </h4>
+    </div>
+    <div class="col-md-6" align="right">
+      <h4>
+	
+	<a href="/edit/gh-pages/reference.md">Edit on GitHub</a>
+	
+	/
+	<a href="/blob/gh-pages/CONTRIBUTING.md">Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob/gh-pages/CITATION">Cite</a>
+	/
+	<a href="mailto:susan.mcclatchy@jax.org">Contact</a>
+      </h4>
+    </div>
+  </div>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

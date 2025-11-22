@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2025-11-22 10:15:12 +0000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+    <title>Quantitative Trait Mapping: SNP association mapping</title>
+  </head>
+  <body>
+    <div class="container">
+      
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+
+      
+      <a class="navbar-brand" href="../">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../conduct/">Code of Conduct</a></li>
+
+	
+        
+        <li><a href="../setup/">Setup</a></li>
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            <li><a href="../02-input-file-format/">Input File Format</a></li>
+            
+            <li><a href="../03-calc-genoprob/">Calculating Genotype Probabilities</a></li>
+            
+            <li><a href="../04-special-x-covar/">Special covariates for the X chromosome</a></li>
+            
+            <li><a href="../05-perform-genome-scan/">Performing a genome scan</a></li>
+            
+            <li><a href="../06-perform-perm-test/">Performing a permutation test</a></li>
+            
+            <li><a href="../07-find-lod-peaks/">Finding LOD peaks</a></li>
+            
+            <li><a href="../08-calc-kinship/">Calculating A Kinship Matrix</a></li>
+            
+            <li><a href="../09-perform-genome-scan-lmm/">Performing a genome scan with a linear mixed model</a></li>
+            
+            <li><a href="../10-perform-genome-scan-bin/">Performing a genome scan with binary traits</a></li>
+            
+            <li><a href="../11-est-qtl-effects/">Estimated QTL effects</a></li>
+            
+            <li><a href="../12-snp-assoc/">SNP association mapping</a></li>
+            
+            <li><a href="../13-qtl-in-do/">QTL analysis in Diversity Outbred Mice</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio/">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference/">Reference</a></li>
+            
+            <li><a href="../about/">About</a></li>
+            
+            <li><a href="../discuss/">Discussion</a></li>
+            
+            <li><a href="../figures/">Figures</a></li>
+            
+            <li><a href="../guide/">Instructor Notes</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../license/">License</a></li>
+	
+	
+	<li><a href="/edit/gh-pages/_episodes_rmd/12-snp-assoc.Rmd">Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+<div class="row">
+  <div class="col-md-1">
+    <h3>
+      
+      <a href="../11-est-qtl-effects/"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-md-10">
+    
+    <h3 class="maintitle"><a href="../">Quantitative Trait Mapping</a></h3>
+    
+  </div>
+  <div class="col-md-1">
+    <h3>
+      
+      <a href="../13-qtl-in-do/"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">SNP association mapping</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 30 min
+      <br/>
+      <strong>Exercises:</strong> 30 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>How do I identify SNPs in a QTL?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Perform a basic QTL analysis.</p>
+</li>
+	
+	<li><p>Identify QTL with a genome scan.</p>
+</li>
+	
+	<li><p>Find SNPs within a QTL.</p>
+</li>
+	
+	<li><p>Convert founder genotypes to a strain distribution pattern (SDP).</p>
+</li>
+	
+	<li><p>Infer SNP genotypes for Diversity Outbred mice.</p>
+</li>
+	
+	<li><p>Perform SNP association analysis</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<p>For multi-parent crosses, it can be useful to collapse the genotype or allele probabilities according to the founder genotypes of the various
+SNPs in the region of a QTL.</p>
+
+<h3 id="qtl-analysis-in-diversity-outbred-mice">QTL analysis in Diversity Outbred mice</h3>
+
+<p>To illustrate this sort of SNP association analysis, we’ll consider some Diversity Outbred mouse data. The Diversity Outcross (DO) mice are an advanced intercross population derived from the same eight founder strains as the Collaborative Cross (CC). See
+<a href="https://www.ncbi.nlm.nih.gov/pubmed/22345611">Svenson et al. (2012)</a>
+and <a href="https://www.ncbi.nlm.nih.gov/pubmed/25237114">Gatti et al. (2014)</a>.</p>
+
+<p>We’ll consider a subset of the data from
+<a href="https://www.ncbi.nlm.nih.gov/pubmed/24700285">Recla et al. (2014)</a>, available as part of the
+<a href="https://github.com/rqtl/qtl2data">qtl2data github repository</a>. (The
+full data are in
+<a href="https://github.com/rqtl/qtl2data/tree/master/DO_Recla"><code class="language-plaintext highlighter-rouge">DO_Recla</code></a>; the directory
+<a href="https://github.com/rqtl/qtl2data/tree/master/DOex"><code class="language-plaintext highlighter-rouge">DOex</code></a> contains a reduced set, with just three chromosomes, one phenotype (<code class="language-plaintext highlighter-rouge">OF_immobile_pct</code>, percent immobile in the open field test), and a
+reduced set of markers.</p>
+
+<p>You can download the data from a single zip file, as follows:</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DOex &lt;- read_cross2(file = "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex.zip")
+</code></pre></div></div>
+
+<p>Let’s quickly whip through a basic analysis.</p>
+
+<p>We first calculate genotype probabilities and convert them to allele probabilities. We’ll just use marker locations and not insert any pseudomarkers.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pr &lt;- calc_genoprob(DOex, error_prob=0.002)
+apr &lt;- genoprob_to_alleleprob(pr)
+</code></pre></div></div>
+
+<p>We calculate kinship matrices (using the “LOCO” method, though with the caveat that here we are only considering genotypes on three chromosomes).</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k &lt;- calc_kinship(apr, "loco")
+</code></pre></div></div>
+
+<p>We create a numeric covariate for sex; be sure to include the individual IDs as names.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sex &lt;- (DOex$covar$Sex == "male")*1
+names(sex) &lt;- rownames(DOex$covar)
+</code></pre></div></div>
+
+<p>Note that you can create the vector and assign the names in one step using the basic R function setNames().</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sex &lt;- setNames( (DOex$covar$Sex == "male")*1, rownames(DOex$covar) )
+</code></pre></div></div>
+
+<p>We perform a genome scan with a linear mixed model (adjusting for a residual polygenic effect), with sex as an additive covariate.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>out &lt;- scan1(apr, DOex$pheno, k, sex)
+</code></pre></div></div>
+
+<p>Here’s a plot of the results.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot(out, DOex$gmap)
+</code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-12-plot_DOex_scan-1.png" alt="plot of chunk plot_DOex_scan" />
+<p class="caption">plot of chunk plot_DOex_scan</p>
+</div>
+
+<p>There’s a strong peak on chromosome 2. Let’s look at the QTL effects. We estimate them with <code class="language-plaintext highlighter-rouge">scan1coef()</code>. We need to subset the allele probabilities and the list of kinship matrices.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>coef_c2 &lt;- scan1coef(apr[,"2"], DOex$pheno, k[["2"]], sex)
+</code></pre></div></div>
+
+<p>For the DO, with 8 QTL alleles, we can use the function <code class="language-plaintext highlighter-rouge">plot_coefCC</code> in the <a href="https://github.com/rqtl/qtl2plot">R/qtl2plot</a> package, which plots the 8 allele effects in the “official” Collaborative Cross (CC)
+colors. (Well, actually <em>slightly</em> modified colors, because I think the official colors are kind of ugly.) The strong locus seems to be mostly
+due to the NZO allele. Note that <code class="language-plaintext highlighter-rouge">CCcolors</code> is a vector of colors included in the qtl2plot package; there’s also a <code class="language-plaintext highlighter-rouge">CCorigcolors</code> object
+with the <em>official</em> colors.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95", legend="bottomleft")
+</code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-12-plot_DOex_effects-1.png" alt="plot of chunk plot_DOex_effects" />
+<p class="caption">plot of chunk plot_DOex_effects</p>
+</div>
+
+<p>If you provide <code class="language-plaintext highlighter-rouge">plot_coefCC()</code> with the genome scan output, it will display the LOD curve below the coefficient estimates.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot_coefCC(coef_c2, DOex$gmap["2"], scan1_output=out, bgcolor="gray95", legend="bottomleft")
+</code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-12-plot_DOex_lod_curve-1.png" alt="plot of chunk plot_DOex_lod_curve" />
+<p class="caption">plot of chunk plot_DOex_lod_curve</p>
+</div>
+
+<h3 id="connecting-to-snp-and-gene-databases">Connecting to SNP and gene databases</h3>
+<p>To perform SNP association analysis in the region of a QTL, we’ll need to grab data on all of the SNPs in the region, including their genotypes in the eight founder strains for the CC and DO populations. As a related task, we’ll also want to identify the genes in the region.</p>
+
+<p>We want R/qtl2 to permit different ways of storing this information. For the CC and DO populations, we’ve prepared SQLite database files for the variants in the CC founders and for the MGI mouse gene annotations. But others might wish to use a different kind of database, or may wish to query an online database.</p>
+
+<p>We provide a template for how to use R/qtl2 to connect to SNP and gene databases, with the functions <code class="language-plaintext highlighter-rouge">create_variant_query_func()</code> and <code class="language-plaintext highlighter-rouge">create_gene_query_func()</code>. Each returns a function for querying variant and gene databases, respectively. The query functions that are returned take just three arguments (chr, start, end end), and themselves return a data frame of variants on the one hand and genes on the other.</p>
+
+<p>During <a href="https://smcclatchy.github.io/mapping/setup/">setup</a> you would have downloaded the SQLite databases from Figshare and placed these in your <code class="language-plaintext highlighter-rouge">data</code> directory:</p>
+
+<ul>
+  <li><a href="https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/3">SQLite database of variants in Collaborative Cross founder mouse strains (v3)</a>: SNP, indel, and structural variants in the Collaborative Cross founders (3.87 GB)</li>
+  <li><a href="https://figshare.com/articles/dataset/SQLite_database_with_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5280238">SQLite database with mouse gene annotations from Mouse Genome Informatics (v6)</a>: full set of mouse gene annotations from build 38 mm10 (529.89 MB)</li>
+  <li><a href="https://figshare.com/articles/dataset/SQLite_database_with_MGI_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5286019">SQLite database with MGI mouse gene annotations from Mouse Genome Informatics (v7)</a>: like the previous, but including only non-duplicate gene records sourced from MGI (11.16 MB)</li>
+</ul>
+
+<p>To create a function for querying the CC variants, call <code class="language-plaintext highlighter-rouge">create_variant_query_func()</code> with the path to the <code class="language-plaintext highlighter-rouge">cc_variants.sqlite</code> file:</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query_variants &lt;- create_variant_query_func("../data/cc_variants.sqlite")
+</code></pre></div></div>
+
+<p>To grab the variants in the interval 97-98 Mbp on chromosome 2, you’d then do the following:</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>variants_2_97.5 &lt;- query_variants(2, 97, 98)
+</code></pre></div></div>
+
+<p>Similarly, to create a function for querying the MGI mouse gene annotations, you call <code class="language-plaintext highlighter-rouge">create_gene_query_func()</code> with the path to the <code class="language-plaintext highlighter-rouge">mouse_genes_mgi.sqlite</code> file:</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query_genes &lt;- create_gene_query_func("../data/mouse_genes_mgi.sqlite")
+</code></pre></div></div>
+
+<p>To grab the genes overlapping the interval 97-98 Mbp on chromosome 2, you’d then do the following:</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>genes_2_97.5 &lt;- query_genes(2, 97, 98)
+</code></pre></div></div>
+
+<p>The way we’ve set this up is a bit complicated, but it allows greatest flexibility on the part of the user. And for our own work, we like to have a local SQLite database, for rapid queries of SNPs and genes.</p>
+
+<h3 id="snp-associations">SNP associations</h3>
+
+<p>Okay, now finally we get to the SNP associations. We have a large peak on chromosome 2, and we want to look at individual SNPs in the region of the locus.</p>
+
+<p>Well, actually, we first need to find the location of the inferred QTL.  The peak LOD score on chromosome 2 occurs at 52.4 cM. But to find nearby SNPs, we really want to know the Mbp position. The calculations were only performed at the marker positions, and so we can use <code class="language-plaintext highlighter-rouge">max()</code>, giving both the <code class="language-plaintext highlighter-rouge">scan1()</code> output and the physical map, and then pull out the position from the results.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>peak_Mbp &lt;- max(out, DOex$pmap)$pos
+</code></pre></div></div>
+
+<p>The marker is at 97.5 Mbp. We’ll focus on a 2 Mbp interval centered at 97.5 Mbp.</p>
+
+<p>We can pull out the variants in the 2 Mbp interval centered at 97.5 on chr 2 using the query function we defined above:</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>variants &lt;- query_variants(2, peak_Mbp - 1, peak_Mbp + 1)
+</code></pre></div></div>
+
+<p>There are 27355 variants in the interval, including 27108 SNPs, 127 indels, and 120 structural variants. We’re treating all of them as biallelic markers (all but the major allele in the eight founder strains binned into a single allele). In the following, we’re going to just say “SNP” rather than “variant”, even though the variants include indels and structural variants.</p>
+
+<p>After identifying the variants in the interval of interest, we use our genotype probabilities and the founder SNP genotypes to infer the SNP genotypes for the DO mice. That is, at each SNP, we want to collapse the eight founder allele probabilities to two SNP allele probabilities, using the SNP genotypes of the founders.</p>
+
+<p>We do this assuming that the genotype probabilities were calculated sufficiently densely that they can be assumed to be constant in intervals. With this assumption, we then:</p>
+
+<ul>
+  <li>Find the interval for each SNP.</li>
+  <li>Reduce the SNPs to a “distinct” set: if two SNPs have the same strain distribution pattern (SDP; the pattern of alleles in the eight founders) and are in the same interval, by our assumption their allele probabilities will be the same.</li>
+  <li>Take the average of the allele probabilities at the two endpoints of each interval.</li>
+  <li>Collapse the 8 allele probabilities to two according to each observed SDP in the interval.</li>
+  <li>We further create a look-up table relating the full set of SNPs to the reduced set (one of each observed SDP in each interval).</li>
+</ul>
+
+<p>All of these steps are combined into a single function <code class="language-plaintext highlighter-rouge">scan1snps()</code>, which takes the genotype probabilities, a physical map of those locations, the phenotype, the kinship matrix, covariates, the query function for grabbing the SNPs in a given interval, and the chromosome, start, and end positions for the interval. (If <code class="language-plaintext highlighter-rouge">insert_pseudomarkers()</code> was used to insert pseudomarkers, you will need to use <code class="language-plaintext highlighter-rouge">interp_map()</code> to get interpolated Mbp positions for the pseudomarkers.)</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>out_snps &lt;- scan1snps(pr, DOex$pmap, DOex$pheno, k[["2"]], sex, query_func=query_variants,
+                      chr=2, start=peak_Mbp-1, end=peak_Mbp+1, keep_all_snps=TRUE)
+</code></pre></div></div>
+
+<p>The output is a list with two components: <code class="language-plaintext highlighter-rouge">lod</code> is a matrix of LOD scores (with a single column, since we’re using just one phenotype), and <code class="language-plaintext highlighter-rouge">snpinfo</code> is a data frame with SNP information. With the argument <code class="language-plaintext highlighter-rouge">keep_all_snps=TRUE</code>, the <code class="language-plaintext highlighter-rouge">snpinfo</code> data frame contains information about all of the variants in the region with an index column indicating the equivalence classes.</p>
+
+<p>The function <code class="language-plaintext highlighter-rouge">plot_snpasso()</code> can be used to plot the results, with points at each of the SNPs. The default is to plot <em>all</em> SNPs. In this case, there are 27737 variants in the region, but only 150 distinct ones.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot_snpasso(out_snps$lod, out_snps$snpinfo)
+</code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-12-plot_snp_asso-1.png" alt="plot of chunk plot_snp_asso" />
+<p class="caption">plot of chunk plot_snp_asso</p>
+</div>
+
+<p>We can actually just type plot() rather than plot_snpasso(), because with the snpinfo table in place of a genetic map, plot() detects that a SNP association plot should be created.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot(out_snps$lod, out_snps$snpinfo)
+</code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-12-plot_snp_asso_wplot-1.png" alt="plot of chunk plot_snp_asso_wplot" />
+<p class="caption">plot of chunk plot_snp_asso_wplot</p>
+</div>
+
+<p>We can use our <code class="language-plaintext highlighter-rouge">query_genes()</code> function to identify the genes in the region, and <code class="language-plaintext highlighter-rouge">plot_genes()</code> to plot their locations. But also <code class="language-plaintext highlighter-rouge">plot_snpasso()</code> can take the gene locations with the argument genes and then display them below the SNP association results. Here, we are also highlighting the top SNPs in the SNP association plot using the <code class="language-plaintext highlighter-rouge">drop_hilit</code> argument. SNPs with LOD score within <code class="language-plaintext highlighter-rouge">drop_hilit</code> of the maximum are shown in pink.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>genes &lt;- query_genes(2, peak_Mbp - 1, peak_Mbp + 1)
+par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5, genes=genes)
+</code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-12-id_and_plot_genes-1.png" alt="plot of chunk id_and_plot_genes" />
+<p class="caption">plot of chunk id_and_plot_genes</p>
+</div>
+
+<p>To get a table of the SNPs with the largest LOD scores, use the function <code class="language-plaintext highlighter-rouge">top_snps()</code>. This will show all SNPs with LOD score within some amount (the default is 1.5) of the maximum SNP LOD score. We’re going to display just a subset of the columns.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>top &lt;- top_snps(out_snps$lod, out_snps$snpinfo)
+print(top[,c(1, 8:15, 20)], row.names=FALSE)
+</code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                    snp A_J C57BL_6J 129S1_SvImJ NOD_ShiLtJ NZO_HlLtJ CAST_EiJ
+             rs33297153   1        1           2          1         2        3
+            rs226751615   1        1           1          1         2        2
+            rs230653109   1        1           1          1         2        2
+            rs250407660   1        1           1          1         2        2
+            rs248216267   1        1           1          1         2        2
+            rs237564299   1        1           1          1         2        2
+            rs255011323   1        1           1          1         2        2
+            rs212448521   1        1           1          1         2        2
+             rs27379206   1        1           1          1         2        2
+             rs27379194   1        1           1          1         2        2
+            rs244484646   1        1           1          1         2        2
+            rs215855380   1        1           1          1         2        2
+            rs236942088   1        1           1          1         2        2
+            rs212414861   1        1           1          1         2        2
+            rs229578122   1        1           1          1         2        2
+            rs254318131   1        1           1          1         2        2
+            rs217679969   1        1           1          1         2        2
+            rs238404461   1        1           1          1         2        2
+            rs262749925   1        1           1          1         2        2
+            rs231282689   1        1           1          1         2        2
+            rs260286709   1        1           1          1         2        2
+             rs27396282   1        1           1          1         2        2
+            rs263841533   1        1           1          1         2        2
+            rs231205920   1        1           1          1         2        2
+            rs242885221   1        1           1          1         2        2
+            rs586746690   1        1           2          1         2        2
+             rs49002164   1        1           2          1         2        2
+ SV_2_96945406_96945414   1        1           1          1         2        3
+            rs244595995   1        1           2          1         2        2
+ SV_2_96993116_96993118   1        1           1          1         2        2
+ PWK_PhJ WSB_EiJ      lod
+       1       1 8.213182
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 7.949721
+       1       1 8.631497
+       1       1 8.631497
+       1       1 8.280942
+       1       1 8.631497
+       1       1 8.280942
+</code></pre></div></div>
+
+<p>The top SNPs all have NZO and CAST with a common allele, different from the other 6 founders. The next-best SNPs have NZO, CAST, and 129 with a common allele, and then there’s a group of SNPs where NZO has a unique allele.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">scan1snps()</code> function can also be used to perform a genome-wide SNP association scan, by providing a variant query function but leaving chr, start, and end unspecified. In this case it’s maybe best to use keep_all_snps=FALSE (the default) and only save the index SNPs.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>out_gwas &lt;- scan1snps(pr, DOex$pmap, DOex$pheno, k, sex, query_func=query_variants, cores=0)
+</code></pre></div></div>
+
+<p>We can make a Manhattan plot of the results as follows. We use <code class="language-plaintext highlighter-rouge">altcol</code> to define a color for alternate chromosomes and <code class="language-plaintext highlighter-rouge">gap=0</code> to have no gap between chromosomes.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot(out_gwas$lod, out_gwas$snpinfo, altcol="green4", gap=0)
+</code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-12-plot_gwas_scan-1.png" alt="plot of chunk plot_gwas_scan" />
+<p class="caption">plot of chunk plot_gwas_scan</p>
+</div>
+
+<p>Note that while there are LOD scores on the X chromosome that are as large as those on chromosome 2, we’re allowing a genotype × sex interaction on the X chromosome and so the test has 3 degrees of freedom (versus 2 degrees of freedom on the autosomes) and so the LOD scores will naturally be larger. If we’d used the allele probabilities (apr above, calculated from <code class="language-plaintext highlighter-rouge">genoprob_to_alleleprob()</code>) rather than the genotype probabilities, we would be performing a test with 1 degree of freedom on both the X chromosome and the autosomes.</p>
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>SNP association analysis with DO mice requires SNPs in the QTL regions.</p>
+</li>
+    
+    <li><p>.</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+<div class="row">
+  <div class="col-md-1">
+    <h3>
+      
+      <a href="../11-est-qtl-effects/"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-md-10">
+    
+  </div>
+  <div class="col-md-1">
+    <h3>
+      
+      <a href="../13-qtl-in-do/"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+      
+      
+<footer>
+  <div class="row">
+    <div class="col-md-6" align="left">
+      <h4>
+	Copyright &copy; 2016–2025
+	
+      </h4>
+    </div>
+    <div class="col-md-6" align="right">
+      <h4>
+	
+	
+	<a href="/edit/gh-pages/_episodes_rmd/12-snp-assoc.Rmd">Edit on GitHub</a>
+	
+	
+	/
+	<a href="/blob/gh-pages/CONTRIBUTING.md">Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob/gh-pages/CITATION">Cite</a>
+	/
+	<a href="mailto:susan.mcclatchy@jax.org">Contact</a>
+      </h4>
+    </div>
+  </div>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

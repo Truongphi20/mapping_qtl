@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2025-11-22 10:15:12 +0000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+    <title>Quantitative Trait Mapping: Performing a genome scan with a linear mixed model</title>
+  </head>
+  <body>
+    <div class="container">
+      
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+
+      
+      <a class="navbar-brand" href="../">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../conduct/">Code of Conduct</a></li>
+
+	
+        
+        <li><a href="../setup/">Setup</a></li>
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            <li><a href="../02-input-file-format/">Input File Format</a></li>
+            
+            <li><a href="../03-calc-genoprob/">Calculating Genotype Probabilities</a></li>
+            
+            <li><a href="../04-special-x-covar/">Special covariates for the X chromosome</a></li>
+            
+            <li><a href="../05-perform-genome-scan/">Performing a genome scan</a></li>
+            
+            <li><a href="../06-perform-perm-test/">Performing a permutation test</a></li>
+            
+            <li><a href="../07-find-lod-peaks/">Finding LOD peaks</a></li>
+            
+            <li><a href="../08-calc-kinship/">Calculating A Kinship Matrix</a></li>
+            
+            <li><a href="../09-perform-genome-scan-lmm/">Performing a genome scan with a linear mixed model</a></li>
+            
+            <li><a href="../10-perform-genome-scan-bin/">Performing a genome scan with binary traits</a></li>
+            
+            <li><a href="../11-est-qtl-effects/">Estimated QTL effects</a></li>
+            
+            <li><a href="../12-snp-assoc/">SNP association mapping</a></li>
+            
+            <li><a href="../13-qtl-in-do/">QTL analysis in Diversity Outbred Mice</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio/">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference/">Reference</a></li>
+            
+            <li><a href="../about/">About</a></li>
+            
+            <li><a href="../discuss/">Discussion</a></li>
+            
+            <li><a href="../figures/">Figures</a></li>
+            
+            <li><a href="../guide/">Instructor Notes</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../license/">License</a></li>
+	
+	
+	<li><a href="/edit/gh-pages/_episodes_rmd/09-perform-genome-scan-lmm.Rmd">Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+<div class="row">
+  <div class="col-md-1">
+    <h3>
+      
+      <a href="../08-calc-kinship/"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-md-10">
+    
+    <h3 class="maintitle"><a href="../">Quantitative Trait Mapping</a></h3>
+    
+  </div>
+  <div class="col-md-1">
+    <h3>
+      
+      <a href="../10-perform-genome-scan-bin/"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Performing a genome scan with a linear mixed model</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 20 min
+      <br/>
+      <strong>Exercises:</strong> 10 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>How do I use a linear mixed model in a genome scan?</p>
+</li>
+	
+	<li><p>How do different mapping and kinship calculation methods differ?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Create a genome scan with a linear mixed model.</p>
+</li>
+	
+	<li><p>Compare LOD plots for Haley-Knott regression and linear mixed model methods.</p>
+</li>
+	
+	<li><p>Compare LOD plots for the standard kinship matrix with the leave-one-chromosome-out (LOCO) method.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<p>Genetic mapping in mice presents a good example of why accounting for population structure is important. Laboratory mouse strains are descended from a small number of founders (fancy mice) and went through several population bottlenecks. Wild-derived strains are not descended from fancy mice and don’t share the same history as laboratory strains. Linear mixed models were developed to solve problems with population structure created by differing ancestries, and to handle relatedness between individuals.  Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. Linear mixed models in mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. Earlier we <a href="https://smcclatchy.github.io/mapping/04-calc-kinship/">calculated a kinship matrix</a> for input to a linear mixed model to account for relationships among individuals. For a current review of mixed models in genetics, see this <a href="https://www.biorxiv.org/content/early/2017/01/28/092106">preprint of Martin and Eskin, 2017</a>.</p>
+
+<p>Simple linear regression takes the form</p>
+
+<p><i>y</i> = <i>μ</i> + <i>βX</i> + <i>ε</i></p>
+
+<p>which describes a line with slope β and y-intercept μ. The error (or residual) is represented by ε.</p>
+
+<p>To model data from a cross, we use</p>
+
+<p><img src="../fig/linear-genetic-model.png" alt="" /></p>
+
+<p>where <i>y<sub>j</sub></i> is the phenotype of the <i>j</i>th individual, μ 
+is the mean phenotype value, <i>β<sub>k</sub></i> is the effect of the 
+<i>kth</i> genotype, <i>X<sub>jk</sub></i> is the genotype for individual j, and ε<sub>j</sub> is the error for the <i>j</i>th individual. In the figure 
+below, μ equals 94.6, and β equals 
+15.4 for the alternative hypothesis 
+(QTL exists). This linear model is <i>y</i> = 94.6 + 
+15.4X + ε. The model intersects the 
+genotype groups at their group means. In contrast, the null hypothesis would 
+state that there is no difference in group means (no QTL anywhere). The linear 
+model for the null hypothesis would be <i>y</i> = 94.6 + 0X + ε. 
+This states that the phenotype is equal to the combined mean (94.6), plus 
+some error (ε). In other words, genotype doesn’t affect the phenotype.</p>
+
+<p><img src="../fig/nullvalt.png" alt="" /></p>
+
+<p>The linear models above describe the relationship between genotype and phenotype but are inadequate for describing the relationship between genotype and phenotype in large datasets. They don’t account for relatedness among individuals. In real populations, the effect of a single genotype is influenced by many other genotypes that affect the phenotype. A  true genetic model takes into account the effect of all variants on the phenotype.</p>
+
+<p>To model the phenotypes of all individuals in the data, we can adapt the simple linear model to include all individuals and their variants so that we capture the effect of all variants shared by individuals on their phenotypes.</p>
+
+<p><img src="../fig/matrix-alg-model.png" alt="" /></p>
+
+<p>Now, <i>y</i> represents the phenotypes of all individuals. The effect of the <i>i</i>th genotype on the phenotype is β<sub>i</sub>, the mean is μ times 1, (mean multiplied by a vector of 1s) and the error is ε. Here, the number of genotypes is M.</p>
+
+<p>To model the effect of all genotypes and to account for relatedness, we test the effect of a single genotype while bringing all other genotypes into the model.</p>
+
+<p><img src="../fig/all-geno-model.png" alt="" /></p>
+
+<p><i>β<sub>k</sub></i> is the effect of the genotype <i>X<sub>k</sub></i>, and Σ<sub>i≠k</sub><i>β<sub>i</sub>X<sub>i</sub></i> sums the effects of all other genotypes except genotype k. For the leave one chromosome out (LOCO) method, <i>β<sub>k</sub></i><i>X<sub>k</sub></i> is the effect of genotypes on chromosome <i>k</i>, and <i>β<sub>i</sub></i><i>X<sub>i</sub></i> represents effect of genotypes on all other chromosomes.</p>
+
+<p>If the sample contains divergent subpopulations, SNPs on different chromosomes will be correlated because of the  difference in allele frequencies between subpopulations caused by relatedness. To correct for correlations between chromosomes, we model all genotypes on the other chromosomes when testing for the association of a SNP.</p>
+
+<p>To perform a genome scan using a linear mixed model you also use the function <code class="language-plaintext highlighter-rouge">scan1</code>; you just need to provide the argument <code class="language-plaintext highlighter-rouge">kinship</code>, a kinship matrix (or, for the LOCO method, a list of kinship matrices).</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>out_pg &lt;- scan1(pr, iron$pheno, kinship=kinship, Xcovar=Xcovar)
+</code></pre></div></div>
+
+<p>Again, on a multi-core machine, you can get some speed-up using the <code class="language-plaintext highlighter-rouge">cores</code> argument.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>out_pg &lt;- scan1(pr, iron$pheno, kinship, Xcovar=Xcovar, cores=4)
+</code></pre></div></div>
+
+<p>If, for your linear mixed model genome scan, you wish to use the “leave one chromosome out” (LOCO) method (scan each chromosome using a kinship matrix that is calculated using data from all other chromosomes), use <code class="language-plaintext highlighter-rouge">type="loco"</code> in the call to <code class="language-plaintext highlighter-rouge">calc_kinship()</code>.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kinship_loco &lt;- calc_kinship(pr, "loco")
+</code></pre></div></div>
+
+<p>For the LOCO (leave one chromosome out) method, provide the list of kinship matrices as obtained from <code class="language-plaintext highlighter-rouge">calc_kinship()</code> with <code class="language-plaintext highlighter-rouge">method="loco"</code>.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>out_pg_loco &lt;- scan1(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
+</code></pre></div></div>
+
+<p>To plot the results, we again use <code class="language-plaintext highlighter-rouge">plot_scan1()</code>.</p>
+
+<p>Here is a plot of the LOD scores by Haley-Knott regression and the linear mixed model using either the standard kinship matrix or the LOCO method.</p>
+
+<p><img src="../fig/lod-plot-compare-liver.png" alt="" />
+<img src="../fig/lod-plot-compare-spleen.png" alt="" /></p>
+
+<p>You can use the code below to generate overlaid plots for each method.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plot_scan1(out_pg_loco, map = map, lodcolumn = "liver", col = "black")
+plot_scan1(out_pg,      map = map, lodcolumn = "liver", col = "blue",  add = TRUE)
+plot_scan1(out,         map = map, lodcolumn = "liver", col = "green", add = TRUE)
+</code></pre></div></div>
+
+<p>For the liver phenotype (top panel), the three methods give quite different results. The linear mixed model with an overall kinship matrix gives much lower LOD scores than the other two methods.  On chromosomes with some evidence of a QTL, the LOCO method gives higher LOD scores than Haley-Knott, except on chromosome 16 where it gives lower LOD scores.</p>
+
+<p>For the spleen phenotype (bottom panel), the linear mixed model with an overall kinship matrix again gives much lower LOD scores than the other two methods. However, in this case Haley-Knott regression and the LOCO method give quite similar results.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-1">Challenge 1</h2>
+  <p>Earlier you inserted pseudomarkers for the <code class="language-plaintext highlighter-rouge">grav</code> data and saved the results to an object called <code class="language-plaintext highlighter-rouge">gravmap</code>.  Then you calculated genotype probabilities and saved the results to an object called <code class="language-plaintext highlighter-rouge">gravpr</code>.  <br />
+1). Calculate kinship for the <code class="language-plaintext highlighter-rouge">grav</code> data using the LOCO method.<br />
+2). Run a genome scan with the genotype probabilities and kinship that you calculated.<br />
+3). Find the maximum LOD score with <code class="language-plaintext highlighter-rouge">maxlod()</code>. The use <code class="language-plaintext highlighter-rouge">find_peaks()</code> to
+locate the position and phenotype of the maximum LOD score. <br />
+4). Plot the genome scan for this phenotype (hint: use the column number as lodcolumn).</p>
+  <blockquote class="solution">
+
+    <h2 id="solution-to-challenge-1">Solution to Challenge 1</h2>
+
+    <p>1). <code class="language-plaintext highlighter-rouge">grav_kinship &lt;- calc_kinship(gravpr, "loco")</code><br />
+2). <code class="language-plaintext highlighter-rouge">out_grav &lt;- scan1(genoprobs = gravpr, pheno = grav$pheno, kinship = grav_kinship)</code><br />
+3). <code class="language-plaintext highlighter-rouge">maxlod &lt;- maxlod(out_grav)</code> then 
+<code class="language-plaintext highlighter-rouge">find_peaks(out_grav, gravmap, threshold = maxlod)</code> 
+4). <code class="language-plaintext highlighter-rouge">plot(out_grav, lodcolumn = 133, map = gravmap)</code></p>
+  </blockquote>
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="challenge-2">Challenge 2</h2>
+  <p>What are the benefits and disadvantages of the three 
+methods for genome scanning (Haley-Knott regression,
+kinship matrix, and leave-one-chromosome out (LOCO)?)<br />
+Which method would you use to scan, and why?<br />
+Think about the advantages and disadvantages of each,
+discuss with a neighbor, and share your thoughts in the
+collaborative document.</p>
+  <blockquote class="solution">
+
+    <h2 id="solution-to-challenge-2">Solution to Challenge 2</h2>
+
+  </blockquote>
+</blockquote>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>file &lt;- paste0("https://raw.githubusercontent.com/rqtl/",
+               "qtl2data/master/B6BTBR/b6btbr.zip")
+b6btbr &lt;- read_cross2(file)
+</code></pre></div></div>
+
+<blockquote class="challenge">
+  <h2 id="challenge-3">Challenge 3</h2>
+  <p>Pair programming exercise: with your partner, review and carry 
+out all of the steps in QTL mapping that we have covered so far,
+using a new data set. One of you types the code, the other
+explains what needs to happen next, finds the relevant code in
+the lesson, suggests new names for objects (i.e. NOT the ones
+you’ve already used, such as “map”, “pr”, “out”, etc.).</p>
+
+  <ol>
+    <li>Run the code above to load the <a href="https://github.com/rqtl/qtl2data/tree/master/B6BTBR">B6 x BTBR intercross data</a> 
+into an object called b6btbr.</li>
+    <li>Insert pseudomarkers and calculate genotype probabilities.</li>
+    <li>Run a genome scan for the log10_insulin_10wk phenotype.</li>
+    <li>Calculate a kinship matrix.</li>
+    <li>Calculate a list of kinship matrices with the LOCO method.</li>
+    <li>Run genome scans with the regular kinship matrix and with the
+list of LOCO matrices.</li>
+    <li>Plot the 3 different genome scans in a single plot in 
+different colors.</li>
+    <li>Which chromosomes appear to have peaks with a LOD score greater than 4? 
+Which methods identify these peaks? Which don’t?</li>
+  </ol>
+
+  <blockquote class="solution">
+
+    <h2 id="solution-to-challenge-3">Solution to Challenge 3</h2>
+
+    <p><code class="language-plaintext highlighter-rouge">file &lt;- paste0("https://raw.githubusercontent.com/rqtl/", "qtl2data/master/B6BTBR/b6btbr.zip")</code><br />
+<code class="language-plaintext highlighter-rouge">b6btbr &lt;- read_cross2(file)</code><br />
+<code class="language-plaintext highlighter-rouge">summary(b6btbr)</code><br />
+<code class="language-plaintext highlighter-rouge">head(b6btbr$pheno)</code><br />
+<code class="language-plaintext highlighter-rouge">colnames(b6btbr$pheno)</code><br />
+<code class="language-plaintext highlighter-rouge">b6bmap &lt;- insert_pseudomarkers(map=b6btbr$gmap, step=1)</code><br />
+<code class="language-plaintext highlighter-rouge">prb6b &lt;- calc_genoprob(cross=b6btbr, map=b6bmap, error_prob=0.002)</code><br />
+<code class="language-plaintext highlighter-rouge">b6bXcovar &lt;- get_x_covar(b6btbr)</code><br />
+<code class="language-plaintext highlighter-rouge">b6bout &lt;- scan1(genoprobs = prb6b, pheno = b6btbr$pheno, Xcovar=b6bXcovar)</code><br />
+<code class="language-plaintext highlighter-rouge">plot(b6bout, map = b6bmap)</code><br />
+<code class="language-plaintext highlighter-rouge">b6bkinship &lt;- calc_kinship(probs = prb6b)</code><br />
+<code class="language-plaintext highlighter-rouge">out_pg_b6b &lt;- scan1(prb6b, b6btbr$pheno, kinship=b6bkinship, Xcovar=b6bXcovar)</code><br />
+<code class="language-plaintext highlighter-rouge">kinship_loco_b6b &lt;- calc_kinship(prb6b, "loco")</code><br />
+<code class="language-plaintext highlighter-rouge">out_pg_loco_b6b &lt;- scan1(prb6b, b6btbr$pheno, kinship_loco_b6b, Xcovar=b6bXcovar)</code><br />
+<code class="language-plaintext highlighter-rouge">plot_scan1(out_pg_loco_b6b, map = b6bmap, lodcolumn = "log10_insulin_10wk", col = "black")</code><br />
+<code class="language-plaintext highlighter-rouge">plot_scan1(out_pg_b6b, map = b6bmap, lodcolumn = "log10_insulin_10wk", col = "blue", add = TRUE)</code><br />
+<code class="language-plaintext highlighter-rouge">plot_scan1(b6bout, map = b6bmap, lodcolumn = "log10_insulin_10wk", col = "green", add = TRUE)</code></p>
+
+  </blockquote>
+</blockquote>
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>To perform a genome scan with a linear mixed model, supply a kinship matrix.</p>
+</li>
+    
+    <li><p>Different mapping and kinship calculation methods give different results.</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+<div class="row">
+  <div class="col-md-1">
+    <h3>
+      
+      <a href="../08-calc-kinship/"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-md-10">
+    
+  </div>
+  <div class="col-md-1">
+    <h3>
+      
+      <a href="../10-perform-genome-scan-bin/"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+      
+      
+<footer>
+  <div class="row">
+    <div class="col-md-6" align="left">
+      <h4>
+	Copyright &copy; 2016–2025
+	
+      </h4>
+    </div>
+    <div class="col-md-6" align="right">
+      <h4>
+	
+	
+	<a href="/edit/gh-pages/_episodes_rmd/09-perform-genome-scan-lmm.Rmd">Edit on GitHub</a>
+	
+	
+	/
+	<a href="/blob/gh-pages/CONTRIBUTING.md">Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob/gh-pages/CITATION">Cite</a>
+	/
+	<a href="mailto:susan.mcclatchy@jax.org">Contact</a>
+      </h4>
+    </div>
+  </div>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

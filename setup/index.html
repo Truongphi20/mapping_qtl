@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2025-11-22 10:15:12 +0000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+    <title>Quantitative Trait Mapping: Setup</title>
+  </head>
+  <body>
+    <div class="container">
+      
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+
+      
+      <a class="navbar-brand" href="../">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../conduct/">Code of Conduct</a></li>
+
+	
+        
+        <li><a href="../setup/">Setup</a></li>
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            <li><a href="../02-input-file-format/">Input File Format</a></li>
+            
+            <li><a href="../03-calc-genoprob/">Calculating Genotype Probabilities</a></li>
+            
+            <li><a href="../04-special-x-covar/">Special covariates for the X chromosome</a></li>
+            
+            <li><a href="../05-perform-genome-scan/">Performing a genome scan</a></li>
+            
+            <li><a href="../06-perform-perm-test/">Performing a permutation test</a></li>
+            
+            <li><a href="../07-find-lod-peaks/">Finding LOD peaks</a></li>
+            
+            <li><a href="../08-calc-kinship/">Calculating A Kinship Matrix</a></li>
+            
+            <li><a href="../09-perform-genome-scan-lmm/">Performing a genome scan with a linear mixed model</a></li>
+            
+            <li><a href="../10-perform-genome-scan-bin/">Performing a genome scan with binary traits</a></li>
+            
+            <li><a href="../11-est-qtl-effects/">Estimated QTL effects</a></li>
+            
+            <li><a href="../12-snp-assoc/">SNP association mapping</a></li>
+            
+            <li><a href="../13-qtl-in-do/">QTL analysis in Diversity Outbred Mice</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio/">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference/">Reference</a></li>
+            
+            <li><a href="../about/">About</a></li>
+            
+            <li><a href="../discuss/">Discussion</a></li>
+            
+            <li><a href="../figures/">Figures</a></li>
+            
+            <li><a href="../guide/">Instructor Notes</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../license/">License</a></li>
+	
+	<li><a href="/edit/gh-pages/setup.md">Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+<h1 class="maintitle"><a href="../">Quantitative Trait Mapping</a>: Setup</h1>
+
+<h2 id="installation">Installation</h2>
+
+<p>R is a programming language that is especially powerful for data exploration, 
+visualization, and statistical analysis. To interact with R, we use RStudio.</p>
+
+<ol>
+  <li>
+    <p>Install the latest version of R from <a href="https://cran.r-project.org/">CRAN</a>.</p>
+  </li>
+  <li>
+    <p>Install the latest version of RStudio <a href="https://www.rstudio.com/products/rstudio/download/">here</a>. 
+Choose the free RStudio Desktop version for Windows, Mac, or Linux.</p>
+  </li>
+  <li>
+    <p>Start RStudio. The <a href="https://github.com/rqtl/qtl2">qtl2</a> package contains code for 
+haplotype reconstruction, QTL mapping and plotting. Install qtl2 by copying and pasting 
+the following code in the R console.</p>
+  </li>
+</ol>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>install.packages("qtl2")
+</code></pre></div></div>
+
+<p>Make sure that the installation was successful by loading the qtl2 library, either by 
+copy-pasting to the Console or by checking the box next to <code class="language-plaintext highlighter-rouge">qtl2</code> in the RStudio Packages 
+tab. You shouldn’t get any error messages.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>library(qtl2)
+</code></pre></div></div>
+
+<h2 id="data-files-and-project-organization">Data files and project organization</h2>
+
+<ol>
+  <li>Create a new project in your Desktop called <code class="language-plaintext highlighter-rouge">mapping</code>.
+    <ul>
+      <li>Click the <code class="language-plaintext highlighter-rouge">File</code> menu button, then <code class="language-plaintext highlighter-rouge">New Project</code>.</li>
+      <li>Click <code class="language-plaintext highlighter-rouge">New Directory</code>.</li>
+      <li>Click <code class="language-plaintext highlighter-rouge">New Project</code>.</li>
+      <li>Type <code class="language-plaintext highlighter-rouge">mapping</code> as the directory name. Browse to your Desktop to create the project there.</li>
+      <li>Click the <code class="language-plaintext highlighter-rouge">Create Project</code> button.</li>
+    </ul>
+  </li>
+  <li>Use the <code class="language-plaintext highlighter-rouge">Files</code> tab to create  a <code class="language-plaintext highlighter-rouge">data</code> folder to hold the data, a <code class="language-plaintext highlighter-rouge">scripts</code> folder to 
+house your scripts, and a <code class="language-plaintext highlighter-rouge">results</code> folder to hold results. Alternatively, you can use the 
+R console to run the following commands for step 2 only. You still need to create a 
+project with step 1.</li>
+</ol>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dir.create("./data")
+dir.create("./scripts")
+dir.create("./results")
+</code></pre></div></div>
+
+<ol>
+  <li>Please download the following large files <strong>before the workshop</strong>, and place them in 
+your <code class="language-plaintext highlighter-rouge">data</code> folder. You can download the files from the URLs below and move the files the 
+same way that you would for downloading and moving any other kind of data.</li>
+</ol>
+
+<ul>
+  <li><a href="https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/3">SQLite database of variants in Collaborative Cross founder mouse strains (v3)</a>: SNP, indel, and structural variants in the Collaborative Cross founders (3.87 GB)</li>
+  <li><a href="https://figshare.com/articles/dataset/SQLite_database_with_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5280238">SQLite database with mouse gene annotations from Mouse Genome Informatics (v7)</a>: full set of mouse gene annotations from build 38 mm10 (568.98 MB)</li>
+  <li><a href="https://figshare.com/articles/dataset/SQLite_database_with_MGI_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5286019">SQLite database with MGI mouse gene annotations from Mouse Genome Informatics (v8)</a>: like the previous, but including only non-duplicate gene records sourced from MGI (11.36 MB)</li>
+  <li><a href="ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata">DO QTL data</a> from benzene study described in <a href="https://ehp.niehs.nih.gov/doi/10.1289/ehp.1408202">French, John E., et al. Env Health Perspectives (2015): 237-245.</a> (240.8 MB)</li>
+</ul>
+
+<p>Alternatively, you can copy and paste the following into the R console to download the 
+data.</p>
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code>options(timeout=900) # set the download timeout to 900 seconds from the default 60 seconds to help with large file downloads
+# these four commands download files from a url and places them in the data directory you created
+download.file(url="https://ndownloader.figshare.com/files/18533342", destfile="./data/cc_variants.sqlite") 
+download.file(url="https://ndownloader.figshare.com/files/24607961", destfile="./data/mouse_genes.sqlite")
+download.file(url="https://ndownloader.figshare.com/files/24607970", destfile="./data/mouse_genes_mgi.sqlite")
+download.file(url="ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", destfile="./data/qtl2_demo.Rdata")
+options(timeout=60) # reset the download timeout to the default 60 seconds
+
+# for Windows machine, add the argument mode=wb to the download.file() command
+# for example
+download.file(url="ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", destfile="./data/qtl2_demo.Rdata", mode = "wb")
+</code></pre></div></div>
+
+<p>You will need these for the final lesson episodes on SNP association mapping and QTL 
+analysis in Diversity Outbred mice.</p>
+
+<p>Make sure that both the SNP and gene files downloaded correctly by running the following 
+code. If you get an error, use <code class="language-plaintext highlighter-rouge">getwd()</code> to check the file path 
+(e.g. <code class="language-plaintext highlighter-rouge">"~/Desktop/mapping/data/cc_variants.sqlite"</code>) carefully or download the files 
+again. Make sure to use <code class="language-plaintext highlighter-rouge">setwd()</code> to change the file path to the location where you saved 
+the file.</p>
+
+<p>Check part of the SNP file. It is a very large file, so checking only a sample of the file 
+should do.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code># create a function to query the SNP file, then use this new function  
+# to select SNPs on chromosome 1 from 10 to 11 Mbp
+snp_func = create_variant_query_func(dbfile = "~/Desktop/mapping/data/cc_variants.sqlite") 
+snps = snp_func(chr = 1, start = 10, end = 11) 
+
+# check the dimensions of this sample of the SNP file
+dim(snps) 
+</code></pre></div></div>
+
+<p>You should get a result that is 13150 rows by 16 columns.</p>
+
+<p>Check the gene file in the same way.</p>
+
+<div class="language-plaintext r highlighter-rouge"><div class="highlight"><pre class="highlight"><code># create a function to query the gene file, then select genes in the same region as above
+gene_func = create_gene_query_func(dbfile = "~/Desktop/mapping/data/mouse_genes_mgi.sqlite") 
+genes = gene_func(chr = 1, start = 10, end = 11) 
+dim(genes) # check the dimensions
+</code></pre></div></div>
+
+<p>You should get a result that is 18 rows by 15 columns.</p>
+
+
+      
+      
+<footer>
+  <div class="row">
+    <div class="col-md-6" align="left">
+      <h4>
+	Copyright &copy; 2016–2025
+	
+      </h4>
+    </div>
+    <div class="col-md-6" align="right">
+      <h4>
+	
+	<a href="/edit/gh-pages/setup.md">Edit on GitHub</a>
+	
+	/
+	<a href="/blob/gh-pages/CONTRIBUTING.md">Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob/gh-pages/CITATION">Cite</a>
+	/
+	<a href="mailto:susan.mcclatchy@jax.org">Contact</a>
+      </h4>
+    </div>
+  </div>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
