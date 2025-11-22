@@ -51,6 +51,7 @@ jobs:
 
       - name: Remove oversized data files before deploy
         run: |
+          sudo chown -R $USER:$USER _site
           rm -f _site/data/cc_multitissue_qtlviewer.Rdata
           rm -f _site/data/qtl2_demo.Rdata
           rm -f _site/data/cc_variants.sqlite
